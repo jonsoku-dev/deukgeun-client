@@ -21,6 +21,12 @@ yarn install
 ```sh
 yarn start
 ```
+
+### generate-client
+```shell
+yarn generate-client
+```
+
 ### storybook
 ```shell
 yarn storybook
