@@ -1,5 +1,8 @@
 import type { AppContext, AppProps } from 'next/app'
 import App from 'next/app'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 import { globalStyles } from '@/shared/styles'
 
@@ -7,7 +10,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       {globalStyles}
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </>
   )
 }
