@@ -1,6 +1,12 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useMemo } from 'react'
+
+import DropList from '@/components/atoms/DropList'
+import Fade from '@/components/atoms/Fade'
+
+import Logo from '../../../../public/logo.svg'
 
 const dummyAvatar = 'https://yt3.ggpht.com/yti/ANoDKi7TmmkTRdl2CISDk2lErk0aMo1xv3hp-XqUqQ=s88-c-k-c0x00ffffff-no-rj-mo'
 
@@ -9,11 +15,21 @@ export interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
-  console.log(isLoggedIn)
+  const router = useRouter()
+  const list = useMemo(() => {
+    if (isLoggedIn) {
+      return [{ text: 'Logout', href: '/logout' }]
+    } else {
+      return [
+        { text: 'Login', href: '/login' },
+        { text: 'Signup', href: '/signup' }
+      ]
+    }
+  }, [isLoggedIn])
   return (
     <Container>
       <Start.Wrapper>
-        <img src="/logo.svg" alt="logo" />
+        <Logo fill="#000" height="64px" width="64px" viewBox="0 0 26 26" onClick={() => router.push('/')} />
       </Start.Wrapper>
       <Center.Wrapper>
         <Link href="/signup">
@@ -27,34 +43,33 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
         </Link>
       </Center.Wrapper>
       <End.Wrapper>
-        {isLoggedIn ? (
-          <End.Avatar>
-            <img src={dummyAvatar} alt="avatar" />
-          </End.Avatar>
-        ) : (
-          <End.Avatar>
-            <img src={'/icon/svg/guest.svg'} alt="avatar" />
-          </End.Avatar>
-        )}
+        <Fade
+          renderButton={(onToggleShowModal) => (
+            <End.Avatar onClick={onToggleShowModal}>
+              <img src={isLoggedIn ? dummyAvatar : '/icon/svg/guest.svg'} alt="avatar" />
+            </End.Avatar>
+          )}
+          renderModal={() => {
+            return <DropList type={'link'} list={list} />
+          }}
+        />
       </End.Wrapper>
     </Container>
   )
 }
 
 const Container = styled.header`
-  background: rgba(142, 142, 142, 0.43);
   display: flex;
   justify-content: space-between;
   align-items: center;
 `
 const Start = {
   Wrapper: styled.div`
-    width: 48px;
-    height: 48px;
-    > img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > svg {
+      cursor: pointer;
     }
   `
 }
@@ -63,6 +78,7 @@ const Center = {
   Wrapper: styled.div`
     display: flex;
     gap: 16px;
+
     a {
       font-size: 1.6rem;
     }
@@ -73,16 +89,19 @@ const End = {
   Wrapper: styled.div`
     display: flex;
     gap: 16px;
+
     a {
       font-size: 1.6rem;
     }
   `,
   Avatar: styled.div`
+    cursor: pointer;
     background: black;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
+
     > img {
       width: 100%;
       height: 100%;
