@@ -17,13 +17,14 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "baseUrl": "./src",
     "sourceMap": true,
     "jsxImportSource": "@emotion/react",
+    "baseUrl": "./src",
     "paths": {
       "@/components/*": ["components/*"],
       "@/interfaces/*": ["interfaces/*"],
       "@/shared/*": ["shared/*"],
+      "@/public/*": ["../public/*"],
     }
   },
   "exclude": ["node_modules"],

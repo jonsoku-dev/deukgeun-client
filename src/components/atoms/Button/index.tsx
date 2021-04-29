@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import React from 'react'
 
 export type ButtonProps = {
   /** 클릭했을 때 호출할 함수 */
@@ -26,11 +27,11 @@ const Button: React.FC<ButtonProps> = ({ onClick, theme = 'primary', size = 'med
 }
 
 const style = css`
+  cursor: pointer;
   outline: none;
   border: none;
   box-sizing: border-box;
-  height: 2rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding: 0.5rem 1rem;
   background: #20c997;
   color: white;
@@ -95,19 +96,16 @@ const themes = {
 
 const sizes = {
   small: css`
-    height: 1.75rem;
-    font-size: 0.75rem;
-    padding: 0 0.875rem;
+    font-size: 1rem;
+    padding: 1rem;
   `,
   medium: css`
-    height: 2.5rem;
-    font-size: 1rem;
-    padding: 0 1rem;
+    font-size: 1.4rem;
+    padding: 1.4rem;
   `,
   big: css`
-    height: 3rem;
-    font-size: 1.125rem;
-    padding: 0 1.5rem;
+    font-size: 1.6rem;
+    padding: 1.6rem;
   `
 }
 

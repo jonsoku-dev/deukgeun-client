@@ -10,7 +10,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   return (
     <Container>
       <ImageWrapper>
-        <img src="/logo.svg" alt="An SVG of logo" />
+        <img src="/logo.svg" alt="logo" />
       </ImageWrapper>
       <MenuWrapper>
         <li>

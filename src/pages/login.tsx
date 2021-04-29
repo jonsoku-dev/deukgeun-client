@@ -1,26 +1,20 @@
 import { AxiosError } from 'axios'
+import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from 'react-query'
 
-import Button from '@/components/atoms/Button'
-import ButtonWrapper from '@/components/atoms/ButtonWrapper'
-import Form from '@/components/atoms/Form'
-import TextField from '@/components/atoms/TextField'
-import CommonLayout from '@/components/organisms/CommonLayout'
+import LoginTemplate from '@/components/templates/LoginTemplate'
 import { loginApi } from '@/shared/apis'
 import useMe from '@/shared/hooks/useMe'
 import * as t from '@/shared/texts'
-
-export interface LoginRequestDto {
-  email: string
-  password: string
-}
+import { LoginRequestDto } from '@/shared/types'
 
 export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
   const { isLoggedIn, meLoading } = useMe(true)
+  const router = useRouter()
 
   const queryClient = useQueryClient()
 
@@ -34,6 +28,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('me')
+        router.push('/')
       },
       onError: (error: AxiosError) => {
         if (error?.response?.data?.message === 'Unauthorized') return alert(t.UNAUTHORIZED_ERROR)
@@ -41,7 +36,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     }
   )
 
-  const { handleSubmit, reset, control } = useForm({
+  const { handleSubmit, control } = useForm({
     mode: 'all',
     reValidateMode: 'onChange'
   })
@@ -54,30 +49,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     return <div>Loading ...</div>
   }
 
-  return (
-    <CommonLayout isLoggedIn={isLoggedIn}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          type="email"
-          label={t.LABEL_EMAIL}
-          name={'email'}
-          control={control}
-          rules={{ required: { value: true, message: t.REQUIRED_EMAIL } }}
-        />
-        <TextField
-          type="password"
-          label={t.LABEL_PASSWORD}
-          name={'password'}
-          control={control}
-          rules={{ required: { value: true, message: t.REQUIRED_PASSWORD } }}
-        />
-        <ButtonWrapper gap={8}>
-          <Button onClick={() => reset()}>Reset</Button>
-          <Button type="submit">Login</Button>
-        </ButtonWrapper>
-      </Form>
-    </CommonLayout>
-  )
+  return <LoginTemplate isLoggedIn={isLoggedIn} control={control} handleSubmit={handleSubmit(onSubmit)} />
 }
 
 export default LoginPage
