@@ -1,5 +1,5 @@
 import { css, useTheme } from '@emotion/react'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 export interface FadeProps {
@@ -9,6 +9,7 @@ export interface FadeProps {
 }
 
 const Fade: React.FC<FadeProps> = ({ renderButton, renderModal }) => {
+  const modalEl = useRef<HTMLDivElement>(null)
   const theme = useTheme()
   const [, setShow] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -17,8 +18,25 @@ const Fade: React.FC<FadeProps> = ({ renderButton, renderModal }) => {
     setShowModal((prev) => !prev)
   }, [])
 
+  const handleClickOutside = useCallback(
+    (e: any) => {
+      if (showModal && modalEl?.current?.contains(e.target) === false) {
+        setShowModal(false)
+      }
+    },
+    [showModal]
+  )
+
+  useEffect(() => {
+    window.addEventListener('click', handleClickOutside)
+    return () => {
+      window.removeEventListener('click', handleClickOutside)
+    }
+  }, [handleClickOutside])
+
   return (
     <div
+      ref={modalEl}
       css={css`
         position: relative;
         .alert-enter {
