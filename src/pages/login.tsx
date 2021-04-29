@@ -10,6 +10,11 @@ import useMe from '@/shared/hooks/useMe'
 import * as t from '@/shared/texts'
 import { LoginRequestDto } from '@/shared/types'
 
+const defaultValues = {
+  email: '',
+  password: ''
+}
+
 export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
@@ -38,7 +43,8 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
   const { handleSubmit, control } = useForm({
     mode: 'all',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    defaultValues
   })
 
   const onSubmit = useCallback((loginRequestDto: LoginRequestDto) => {

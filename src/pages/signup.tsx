@@ -9,6 +9,12 @@ import useMe from '@/shared/hooks/useMe'
 import { SignupRequestDto } from '../__generated__/typescript-axios'
 import SignupTemplate from '../components/templates/SignupTemplate'
 
+const defaultValues = {
+  username: '',
+  email: '',
+  password: ''
+}
+
 export interface SignupPageProps {}
 
 const SignupPage: React.FC<SignupPageProps> = () => {
@@ -16,7 +22,8 @@ const SignupPage: React.FC<SignupPageProps> = () => {
 
   const { control, handleSubmit } = useForm({
     mode: 'all',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    defaultValues
   })
 
   const SignupMutation = useMutation(
