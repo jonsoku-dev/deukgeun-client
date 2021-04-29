@@ -1,6 +1,11 @@
 import axios from 'axios'
 
-import { Configuration, IndexControllerApiFactory, LoginEndpointApiFactory } from '../../__generated__/typescript-axios'
+import {
+  Configuration,
+  IndexControllerApiFactory,
+  LoginEndpointApiFactory,
+  UserControllerApiFactory
+} from '../../__generated__/typescript-axios'
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080'
@@ -8,9 +13,12 @@ const axiosInstance = axios.create({
 
 axios.interceptors.response.use(
   (response: any) => {
+    console.log(response, 'response')
     return response
   },
   (error: any) => {
+    console.log(error, 'error')
+
     if (axios.isCancel(error)) {
       return Promise.resolve()
     }
@@ -21,3 +29,4 @@ axios.interceptors.response.use(
 
 export const indexApi = IndexControllerApiFactory({} as Configuration, '', axiosInstance)
 export const loginApi = LoginEndpointApiFactory({} as Configuration, '', axiosInstance)
+export const userApi = UserControllerApiFactory({} as Configuration, '', axiosInstance)

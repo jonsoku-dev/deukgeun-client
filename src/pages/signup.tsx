@@ -3,13 +3,17 @@ import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 
+import CommonLayout from '@/components/organisms/CommonLayout'
 import { indexApi } from '@/shared/apis'
+import useMe from '@/shared/hooks/useMe'
 
 import { SignupRequestDto } from '../__generated__/typescript-axios'
 
 export interface SignupPageProps {}
 
 const SignupPage: React.FC<SignupPageProps> = () => {
+  const { meLoading, isLoggedIn } = useMe(true)
+
   const {
     register,
     handleSubmit,
@@ -45,10 +49,14 @@ const SignupPage: React.FC<SignupPageProps> = () => {
     SignupMutation.mutate(signupRequestDto)
   }, [])
 
+  if (meLoading) {
+    return <div>Loading ...</div>
+  }
+
   return (
-    <div>
+    <CommonLayout isLoggedIn={isLoggedIn}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <fieldset>
+        <div>
           <label htmlFor="signup-username">Username</label>
           <input
             type="username"
@@ -61,9 +69,9 @@ const SignupPage: React.FC<SignupPageProps> = () => {
             })}
           />
           {errors?.username?.message && <p>{errors.username.message}</p>}
-        </fieldset>
+        </div>
 
-        <fieldset>
+        <div>
           <label htmlFor="signup-email">Email</label>
           <input
             type="email"
@@ -76,9 +84,9 @@ const SignupPage: React.FC<SignupPageProps> = () => {
             })}
           />
           {errors?.email?.message && <p>{errors.email.message}</p>}
-        </fieldset>
+        </div>
 
-        <fieldset>
+        <div>
           <label htmlFor="signup-password">Password</label>
           <input
             type="password"
@@ -91,11 +99,11 @@ const SignupPage: React.FC<SignupPageProps> = () => {
             })}
           />
           {errors?.password?.message && <p>{errors.password.message}</p>}
-        </fieldset>
+        </div>
         <button onClick={() => reset()}>Reset</button>
         <button type="submit">Signup</button>
       </form>
-    </div>
+    </CommonLayout>
   )
 }
 
