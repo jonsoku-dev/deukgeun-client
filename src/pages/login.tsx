@@ -3,6 +3,10 @@ import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from 'react-query'
 
+import Button from '@/components/atoms/Button'
+import ButtonWrapper from '@/components/atoms/ButtonWrapper'
+import Form from '@/components/atoms/Form'
+import TextField from '@/components/atoms/TextField'
 import CommonLayout from '@/components/organisms/CommonLayout'
 import { loginApi } from '@/shared/apis'
 import useMe from '@/shared/hooks/useMe'
@@ -37,18 +41,9 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     }
   )
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm<LoginRequestDto>({
+  const { handleSubmit, reset, control } = useForm({
     mode: 'all',
-    reValidateMode: 'onChange',
-    defaultValues: {
-      email: '',
-      password: ''
-    }
+    reValidateMode: 'onChange'
   })
 
   const onSubmit = useCallback((loginRequestDto: LoginRequestDto) => {
@@ -61,39 +56,26 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
   return (
     <CommonLayout isLoggedIn={isLoggedIn}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="login-email">Email</label>
-          <input
-            type="email"
-            id="login-email"
-            {...register('email', {
-              required: {
-                value: true,
-                message: 'Email is required'
-              }
-            })}
-          />
-          {errors?.email?.message && <p>{errors.email.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="login-password">Password</label>
-          <input
-            type="password"
-            id="login-password"
-            {...register('password', {
-              required: {
-                value: true,
-                message: 'Password is required'
-              }
-            })}
-          />
-          {errors?.password?.message && <p>{errors.password.message}</p>}
-        </div>
-        <button onClick={() => reset()}>Reset</button>
-        <button type="submit">Login</button>
-      </form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          type="email"
+          label={t.LABEL_EMAIL}
+          name={'email'}
+          control={control}
+          rules={{ required: { value: true, message: t.REQUIRED_EMAIL } }}
+        />
+        <TextField
+          type="password"
+          label={t.LABEL_PASSWORD}
+          name={'password'}
+          control={control}
+          rules={{ required: { value: true, message: t.REQUIRED_PASSWORD } }}
+        />
+        <ButtonWrapper gap={8}>
+          <Button onClick={() => reset()}>Reset</Button>
+          <Button type="submit">Login</Button>
+        </ButtonWrapper>
+      </Form>
     </CommonLayout>
   )
 }

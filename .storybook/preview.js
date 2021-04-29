@@ -1,3 +1,4 @@
+import React from 'react'
 import { ThemeProvider } from '@emotion/react'
 import { emotionTheme, globalStyles } from '../src/shared/styles'
 

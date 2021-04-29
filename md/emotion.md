@@ -53,3 +53,11 @@ https://emotion.sh/docs/typescript#css-prop
   }
 }
 ```
+
+## emotion + storybook
+https://github.com/emotion-js/emotion/issues/2041#issuecomment-708263981
+```typescript
+/** @jsxImportSource @emotion/react */
+
+...
+```

@@ -3,14 +3,18 @@ import App from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
 const queryClient = new QueryClient()
 
-import { globalStyles } from '@/shared/styles'
+import { ThemeProvider } from '@emotion/react'
+
+import { emotionTheme, globalStyles } from '@/shared/styles'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       {globalStyles}
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <ThemeProvider theme={emotionTheme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </QueryClientProvider>
     </>
   )
