@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 
@@ -31,17 +30,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
       <Start.Wrapper>
         <Logo fill="#000" height="64px" width="64px" viewBox="0 0 26 26" onClick={() => router.push('/')} />
       </Start.Wrapper>
-      <Center.Wrapper>
-        <Link href="/signup">
-          <a>Signup</a>
-        </Link>
-        <Link href="/login">
-          <a>Login</a>
-        </Link>
-        <Link href="/logout">
-          <a>Logout</a>
-        </Link>
-      </Center.Wrapper>
+      <Center.Wrapper>i&apos;m center</Center.Wrapper>
       <End.Wrapper>
         <Fade
           renderButton={(onToggleShowModal) => (

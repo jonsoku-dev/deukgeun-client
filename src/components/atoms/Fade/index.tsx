@@ -19,18 +19,20 @@ const Fade: React.FC<FadeProps> = ({ renderButton, renderModal }) => {
   }, [])
 
   const handleClickOutside = useCallback(
-    (e: any) => {
-      if (showModal && modalEl?.current?.contains(e.target) === false) {
-        setShowModal(false)
+    (e: MouseEvent) => {
+      if (showModal && modalEl?.current?.contains(e.target as HTMLElement) === false) {
+        return setShowModal(false)
+      } else {
+        return null
       }
     },
     [showModal]
   )
 
   useEffect(() => {
-    window.addEventListener('click', handleClickOutside)
+    window.addEventListener('click', handleClickOutside, false)
     return () => {
-      window.removeEventListener('click', handleClickOutside)
+      window.removeEventListener('click', handleClickOutside, false)
     }
   }, [handleClickOutside])
 
@@ -70,7 +72,7 @@ const Fade: React.FC<FadeProps> = ({ renderButton, renderModal }) => {
             position: absolute;
             right: 16px;
             background: #fff;
-            padding: ${theme.space * 3}px 0;
+            padding: ${theme.space * 2}px 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
